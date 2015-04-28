@@ -15,7 +15,7 @@ import time                       # used in the cache refresh code
 from random import randrange
 import imp
 import inspect
-import StringIO
+from six.moves import StringIO
 import traceback
 import pprint
 import cgi                # Used by .webInput() if the template is a CGI script.

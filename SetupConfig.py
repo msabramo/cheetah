@@ -64,6 +64,7 @@ if not os.getenv('CHEETAH_INSTALL_WITHOUT_SETUPTOOLS'):
         from setuptools import setup
         install_requires = [
                 "Markdown >= 2.0.1",
+                "six",
         ]
         if sys.platform == 'win32':
             # use 'entry_points' instead of 'scripts'
