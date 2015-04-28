@@ -29,7 +29,10 @@ classifiers = [line.strip() for line in '''\
   Topic :: Software Development :: Libraries :: Python Modules
   Topic :: Software Development :: User Interfaces
   Topic :: Text Processing'''.splitlines() if not line.strip().startswith('#')]
-del line
+try:
+    del line
+except NameError:
+    pass
 
 package_dir = {'Cheetah':'cheetah'}
 

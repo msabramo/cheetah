@@ -13,8 +13,8 @@ Documentation
 
 Mailing list
 cheetahtemplate-discuss@lists.sourceforge.net
-Subscribe at 
+Subscribe at
     http://lists.sourceforge.net/lists/listinfo/cheetahtemplate-discuss
 '''
 
-from Version import *
+from .Version import *

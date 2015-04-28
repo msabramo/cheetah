@@ -146,11 +146,14 @@ __all__ = ['NotFound',
            'valueFromFrame',
            ]
 
-if not hasattr(inspect.imp, 'get_suffixes'):
-    # This is to fix broken behavior of the inspect module under the
-    # Google App Engine, see the following issue:
-    # http://bugs.communitycheetah.org/view.php?id=10
-    setattr(inspect.imp, 'get_suffixes', lambda: [('.py', 'U', 1)])
+try:
+    if not hasattr(inspect.imp, 'get_suffixes'):
+        # This is to fix broken behavior of the inspect module under the
+        # Google App Engine, see the following issue:
+        # http://bugs.communitycheetah.org/view.php?id=10
+        setattr(inspect.imp, 'get_suffixes', lambda: [('.py', 'U', 1)])
+except AttributeError:
+    pass
 
 ## N.B. An attempt is made at the end of this module to import C versions of
 ## these functions.  If _namemapper.c has been compiled succesfully and the
@@ -234,7 +237,7 @@ def _valueForName(obj, name, executeCallables=False):
 def valueForName(obj, name, executeCallables=False):
     try:
         return _valueForName(obj, name, executeCallables)
-    except NotFound, e:
+    except NotFound as e:
         _wrapNotFoundException(e, fullName=name, namespace=obj)
 
 def valueFromSearchList(searchList, name, executeCallables=False):
@@ -258,7 +261,7 @@ def valueFromFrameOrSearchList(searchList, name, executeCallables=False,
     def __valueForName():
         try:
             return _valueForName(namespace, name, executeCallables=executeCallables)
-        except NotFound, e:
+        except NotFound as e:
             _wrapNotFoundException(e, fullName=name, namespace=searchList)
     try:
         if not frame:

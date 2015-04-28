@@ -33,6 +33,12 @@ if sys.platform == 'win32' and sys.version_info > (2, 6):
 else:
    ext_errors = (CCompilerError, DistutilsExecError, DistutilsPlatformError)
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
+
 ##################################################
 ## CLASSES ##
 
@@ -47,13 +53,13 @@ class mod_build_ext(build_ext):
     def run(self):
         try:
             build_ext.run(self)
-        except DistutilsPlatformError, x:
+        except DistutilsPlatformError as x:
             raise BuildFailed(x)
 
     def build_extension(self, ext):
         try:
             build_ext.build_extension(self, ext)
-        except ext_errors, x:
+        except ext_errors as x:
             raise BuildFailed(x)
 
    
@@ -80,7 +86,7 @@ class mod_install_data(install_data):
             if not isinstance(entry, basestring):
                 raise ValueError('The entries in "data_files" must be strings')
             
-            entry = string.join(string.split(entry, '/'), os.sep)
+            entry = os.path.join(*entry.split('/'))
             # entry is a filename or glob pattern
             if entry.startswith('recursive:'):
                 entry = entry[len('recursive:'):]
@@ -156,7 +162,7 @@ def run_setup(configurations):
     # Invoke distutils setup
     try:
         setup(**kws)
-    except BuildFailed, x:
+    except BuildFailed as x:
         print("One or more C extensions failed to build.")
         print("Details: %s" % x)
         if os.environ.get('CHEETAH_C_EXTENSIONS_REQUIRED'):
