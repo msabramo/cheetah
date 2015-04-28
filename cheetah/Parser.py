@@ -15,7 +15,10 @@ import re
 from re import DOTALL, MULTILINE
 import types
 import time
-from tokenize import pseudoprog
+try:
+    from tokenize import pseudoprog
+except ImportError:
+    from tokenize import PseudoToken as pseudoprog
 import inspect
 import traceback
 
@@ -24,6 +27,13 @@ from Cheetah import Filters
 from Cheetah import ErrorCatchers
 from Cheetah.Unspecified import Unspecified
 from Cheetah.Macros.I18n import I18n
+
+try:
+    # Python 2
+    unicode
+except NameError:
+    # Python 3
+    unicode = str
 
 # re tools
 _regexCache = {}

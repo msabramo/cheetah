@@ -35,6 +35,20 @@ VFSL=valueFromSearchList
 VFN=valueForName
 currentTime=time.time
 
+try:
+    # Python 2
+    basestring
+except NameError:
+    # Python 3
+    basestring = str
+
+try:
+    # Python 2
+    unicode
+except NameError:
+    # Python 3
+    unicode = str
+
 class Error(Exception): pass
 
 # Settings format: (key, default, docstring)

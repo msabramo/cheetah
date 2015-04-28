@@ -29,6 +29,13 @@ _installed = False
 
 _os_stat = _os_path_join = _os_getcwd = _os_path_dirname = None
 
+try:
+    # Python 2
+    basestring
+except NameError:
+    # Python 3
+    basestring = str
+
 ##################################################
 ## FUNCTIONS
 
@@ -125,7 +132,7 @@ def pathIsDir(pathname):
         s = _os_stat(pathname)
     except OSError:
         return None
-    return (s[0] & 0170000) == 0040000
+    return (s[0] & 0o170000) == 0o040000
 
 def getDescr(fnm):
     ext = getPathExt(fnm)
@@ -198,7 +205,7 @@ class DirOwner(Owner):
                 try:
                     co = compile(open(py[0], 'r').read()+'\n', py[0], 'exec')
                     break
-                except SyntaxError, e:
+                except SyntaxError as e:
                     print("Invalid syntax in %s" % py[0])
                     print(e.args)
                     raise
@@ -378,7 +385,7 @@ class ImportManager:
             self._get_ident = thread.get_ident
             
     def install(self):
-        import __builtin__
+        from six.moves import builtins as __builtin__
         __builtin__.__import__ = self.importHook
         __builtin__.reload = self.reloadHook
         

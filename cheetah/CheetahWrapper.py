@@ -16,7 +16,10 @@ __author__ = "Tavis Rudd <tavis@damnsimple.com> and Mike Orr <sluggoster@gmail.c
 __revision__ = "$Revision: 1.26 $"[11:-2]
 
 import getopt, glob, os, pprint, re, shutil, sys
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 from optparse import OptionParser
 
 from Cheetah.Version import Version

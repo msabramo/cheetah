@@ -32,7 +32,7 @@ except ImportError:
 
 filetype = None
 
-if isinstance(sys.version_info[:], tuple):
+if sys.version_info < (3, ):
     # Python 2.xx
     filetype = types.FileType
     def createMethod(func, cls):
@@ -43,6 +43,10 @@ else:
     def createMethod(func, cls):
         return types.MethodType(func, cls)
 
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 from Cheetah.Version import convertVersionStringToTuple, MinCompatibleVersionTuple
@@ -586,10 +590,10 @@ class Template(Servlet):
         """
         errmsg = "arg '%s' must be %s"
 
-        if not isinstance(source, (types.NoneType, basestring)):
+        if not isinstance(source, (type(None), basestring)):
             raise TypeError(errmsg % ('source', 'string or None'))
 
-        if not isinstance(file, (types.NoneType, basestring, filetype)):
+        if not isinstance(file, (type(None), basestring, filetype)):
             raise TypeError(errmsg %
                             ('file', 'string, file-like object, or None'))
 
@@ -598,7 +602,7 @@ class Template(Servlet):
         if isinstance(baseclass, Template):
             baseclass = baseclass.__class__
 
-        if not isinstance(baseclass, (types.NoneType, basestring, type)):
+        if not isinstance(baseclass, (type(None), basestring, type)):
             raise TypeError(errmsg % ('baseclass', 'string, class or None'))
 
         if cacheCompilationResults is Unspecified:
@@ -629,7 +633,7 @@ class Template(Servlet):
         if not isinstance(keepRefToGeneratedCode, (int, bool)):
             raise TypeError(errmsg % ('keepReftoGeneratedCode', 'boolean'))
 
-        if not isinstance(moduleName, (types.NoneType, basestring)):
+        if not isinstance(moduleName, (type(None), basestring)):
             raise TypeError(errmsg % ('moduleName', 'string or None'))
         __orig_file__ = None
         if not moduleName:
@@ -642,14 +646,14 @@ class Template(Servlet):
         if className is Unspecified:
             className = klass._CHEETAH_defaultClassNameForTemplates
 
-        if not isinstance(className, (types.NoneType, basestring)):
+        if not isinstance(className, (type(None), basestring)):
             raise TypeError(errmsg % ('className', 'string or None'))
         className = re.sub(r'^_+([^0-9])',r'\1', className or moduleName)
 
         if mainMethodName is Unspecified:
             mainMethodName = klass._CHEETAH_defaultMainMethodNameForTemplates
 
-        if not isinstance(mainMethodName, (types.NoneType, basestring)):
+        if not isinstance(mainMethodName, (type(None), basestring)):
             raise TypeError(errmsg % ('mainMethodName', 'string or None'))
 
         if moduleGlobals is Unspecified:
@@ -665,7 +669,7 @@ class Template(Servlet):
         if cacheDirForModuleFiles is Unspecified:
             cacheDirForModuleFiles = klass._CHEETAH_cacheDirForModuleFiles
 
-        if not isinstance(cacheDirForModuleFiles, (types.NoneType, basestring)):
+        if not isinstance(cacheDirForModuleFiles, (type(None), basestring)):
             raise TypeError(errmsg %
                             ('cacheDirForModuleFiles', 'string or None'))
 
@@ -1168,14 +1172,14 @@ class Template(Servlet):
         errmsg = "arg '%s' must be %s"
         errmsgextra = errmsg + "\n%s"
 
-        if not isinstance(source, (types.NoneType, basestring)):
+        if not isinstance(source, (type(None), basestring)):
             raise TypeError(errmsg % ('source', 'string or None'))
 
-        if not isinstance(file, (types.NoneType, basestring, filetype)):
+        if not isinstance(file, (type(None), basestring, filetype)):
             raise TypeError(errmsg %
                             ('file', 'string, file open for reading, or None'))
 
-        if not isinstance(filter, (basestring, types.TypeType)) and not \
+        if not isinstance(filter, (basestring, type(type))) and not \
                 (isinstance(filter, type) and issubclass(filter, Filters.Filter)):
             raise TypeError(errmsgextra %
                             ('filter', 'string or class',
