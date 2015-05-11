@@ -18,7 +18,8 @@ import time
 try:
     from tokenize import pseudoprog
 except ImportError:
-    from tokenize import PseudoToken as pseudoprog
+    from tokenize import PseudoToken
+    pseudoprog = re.compile(PseudoToken)
 import inspect
 import traceback
 
