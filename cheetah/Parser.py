@@ -22,6 +22,8 @@ except ImportError:
 import inspect
 import traceback
 
+import six
+
 from Cheetah.SourceReader import SourceReader
 from Cheetah import Filters
 from Cheetah import ErrorCatchers
@@ -352,8 +354,8 @@ class ArgList(object):
         self.defaults[count] += token
     
     def merge(self):
-        defaults = (isinstance(d, basestring) and d.strip() or None for d in self.defaults)
-        return list(map(None, (a.strip() for a in self.arguments), defaults))
+        defaults = (isinstance(d, six.string_types) and d.strip() or None for d in self.defaults)
+        return list(zip((a.strip() for a in self.arguments), defaults))
     
     def __str__(self):
         return str(self.merge())
